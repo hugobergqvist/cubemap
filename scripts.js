@@ -45,7 +45,19 @@ function main() {
 
   // create buffers and fill with vertex data
   const cubeBufferInfo = primitives.createCubeBufferInfo(gl, 1);
+
+  // SPHERE PARAMETERS: radius, subdivisionsAxis, subdivisionsHeight
   const sphereBufferInfo = primitives.createSphereBufferInfo(gl, 0.5, 50, 50);
+
+  //CONE PARAMETERS: bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions
+  const coneBufferInfo = primitives.createTruncatedConeBufferInfo(
+    gl,
+    0.2,
+    0.4,
+    0.6,
+    50,
+    50
+  );
   const quadBufferInfo = primitives.createXYQuadBufferInfo(gl);
 
   // Create a texture.
@@ -207,6 +219,8 @@ function main() {
         envmapProgramInfo,
         sphereBufferInfo
       );
+    } else if (objectState == "cone") {
+      webglUtils.setBuffersAndAttributes(gl, envmapProgramInfo, coneBufferInfo);
     }
 
     webglUtils.setUniforms(envmapProgramInfo, {
@@ -221,6 +235,8 @@ function main() {
       webglUtils.drawBufferInfo(gl, cubeBufferInfo);
     } else if (objectState == "sphere") {
       webglUtils.drawBufferInfo(gl, sphereBufferInfo);
+    } else if (objectState == "cone") {
+      webglUtils.drawBufferInfo(gl, coneBufferInfo);
     }
 
     // draw the skybox
