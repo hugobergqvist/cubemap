@@ -11,6 +11,28 @@
   </head>
   <body>
     <canvas id="canvas"></canvas>
+    <div id="navigationPanel">
+      <p>Set object</p>
+      <div id="objectButtonsWrapper">
+      <button class="navButton" onclick="setObject(`cube`)">
+        Cube
+      </button>
+      <button class="navButton" onclick="setObject(`sphere`)">
+        Sphere
+      </button>
+    </div>
+      <p>Set Background</p>
+      <div id="backgroundButtonsWrapper">
+      <button class="navButton" onclick="setBackground(`bridge`)">
+        Niagra
+      </button>
+      <button class="navButton" onclick="setBackground(`footballField`)">
+        Football field
+      </button>
+      <button class="navButton" onclick="setBackground(`saintLazarusChurch`)">
+        Saint Lazarus church
+      </button>
+    </div>
     <script id="envmap-vertex-shader" type="x-shader/x-vertex">
       attribute vec4 a_position;
       attribute vec3 a_normal;

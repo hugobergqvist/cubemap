@@ -1,5 +1,22 @@
 "use strict";
 
+var backgroundState = "bridge";
+var objectState = "sphere";
+
+function setObject(shape) {
+  console.log(shape);
+  objectState = shape;
+}
+
+function setBackground(background) {
+  if (background != backgroundState) {
+    backgroundState = background;
+    main();
+  }
+}
+
+function createEnvironment() {}
+
 function main() {
   // Get A WebGL context
   /** @type {HTMLCanvasElement} */
@@ -20,6 +37,7 @@ function main() {
     "envmap-vertex-shader",
     "envmap-fragment-shader",
   ]);
+
   const skyboxProgramInfo = webglUtils.createProgramInfo(gl, [
     "skybox-vertex-shader",
     "skybox-fragment-shader",
@@ -27,52 +45,48 @@ function main() {
 
   // create buffers and fill with vertex data
   const cubeBufferInfo = primitives.createCubeBufferInfo(gl, 1);
+  const sphereBufferInfo = primitives.createSphereBufferInfo(gl, 0.5, 50, 50);
   const quadBufferInfo = primitives.createXYQuadBufferInfo(gl);
 
   // Create a texture.
   const texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
 
-  const faceInfos = [
+  var faceInfos = [
     {
       target: gl.TEXTURE_CUBE_MAP_POSITIVE_X,
-      url:
-        "https://webglfundamentals.org/webgl/resources/images/computer-history-museum/pos-x.jpg",
+      url: `images/${backgroundState}/posx.jpg`,
     },
     {
       target: gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-      url:
-        "https://webglfundamentals.org/webgl/resources/images/computer-history-museum/neg-x.jpg",
+      url: `images/${backgroundState}/negx.jpg`,
     },
     {
       target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
-      url:
-        "https://webglfundamentals.org/webgl/resources/images/computer-history-museum/pos-y.jpg",
+      url: `images/${backgroundState}/posy.jpg`,
     },
     {
       target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-      url:
-        "https://webglfundamentals.org/webgl/resources/images/computer-history-museum/neg-y.jpg",
+      url: `images/${backgroundState}/negy.jpg`,
     },
     {
       target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
-      url:
-        "https://webglfundamentals.org/webgl/resources/images/computer-history-museum/pos-z.jpg",
+      url: `images/${backgroundState}/posz.jpg`,
     },
     {
       target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z,
-      url:
-        "https://webglfundamentals.org/webgl/resources/images/computer-history-museum/neg-z.jpg",
+      url: `images/${backgroundState}/negz.jpg`,
     },
   ];
+
   faceInfos.forEach((faceInfo) => {
     const { target, url } = faceInfo;
 
     // Upload the canvas to the cubemap face.
     const level = 0;
     const internalFormat = gl.RGBA;
-    const width = 512;
-    const height = 512;
+    const width = 2048;
+    const height = 2048;
     const format = gl.RGBA;
     const type = gl.UNSIGNED_BYTE;
 
@@ -92,7 +106,7 @@ function main() {
     // Asynchronously load an image
     const image = new Image();
 
-    requestCORSIfNotSameOrigin(image, url);
+    //requestCORSIfNotSameOrigin(image, url);
     image.src = url;
 
     image.addEventListener("load", function () {
@@ -184,7 +198,17 @@ function main() {
     // draw the cube
     gl.depthFunc(gl.LESS); // use the default depth test
     gl.useProgram(envmapProgramInfo.program);
-    webglUtils.setBuffersAndAttributes(gl, envmapProgramInfo, cubeBufferInfo);
+    //webglUtils.setBuffersAndAttributes(gl, envmapProgramInfo, cubeBufferInfo);
+    if (objectState == "cube") {
+      webglUtils.setBuffersAndAttributes(gl, envmapProgramInfo, cubeBufferInfo);
+    } else if (objectState == "sphere") {
+      webglUtils.setBuffersAndAttributes(
+        gl,
+        envmapProgramInfo,
+        sphereBufferInfo
+      );
+    }
+
     webglUtils.setUniforms(envmapProgramInfo, {
       u_world: worldMatrix,
       u_view: viewMatrix,
@@ -192,7 +216,12 @@ function main() {
       u_texture: texture,
       u_worldCameraPosition: cameraPosition,
     });
-    webglUtils.drawBufferInfo(gl, cubeBufferInfo);
+
+    if (objectState == "cube") {
+      webglUtils.drawBufferInfo(gl, cubeBufferInfo);
+    } else if (objectState == "sphere") {
+      webglUtils.drawBufferInfo(gl, sphereBufferInfo);
+    }
 
     // draw the skybox
 
