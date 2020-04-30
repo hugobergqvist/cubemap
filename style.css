@@ -7,6 +7,7 @@ canvas {
   width: 90vh;
   height: 50vh;
   margin: auto;
+  margin-top: 30px;
 }
 #navigationPanel {
   margin: auto;
