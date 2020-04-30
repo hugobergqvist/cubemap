@@ -134,11 +134,24 @@ function createSpherePanel() {
   div.appendChild(sphereSubdivisionsHeightSlider);
 }
 
+function createConePanel() {
+  const div = document.getElementById("sliderPanel");
+  div.innerHTML = "";
+
+  var coneLabel = document.createElement("p");
+  coneLabel.innerText = "TODO: Options for cone";
+  coneLabel.className = "dropDownLabel";
+
+  div.appendChild(coneLabel);
+}
+
 function setObject(selectObject) {
   if (selectObject.value == "cube") {
     createCubePanel();
   } else if (selectObject.value == "sphere") {
     createSpherePanel();
+  } else {
+    createConePanel();
   }
 
   console.log(selectObject.value);
