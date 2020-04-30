@@ -3,18 +3,40 @@ body {
   margin: 0;
   background-color: white;
 }
-canvas {
-  width: 90vh;
-  height: 50vh;
-  margin: auto;
-  margin-top: 30px;
+
+#flexContainer {
+  display: flex;
+  padding: 12px;
 }
+
+canvas {
+  width: 100%;
+  height: 80vh;
+  margin: auto;
+}
+
+#leftSection {
+  flex: 1;
+  padding: 12px;
+}
+#rightSection {
+  flex: 3;
+  padding: 12px;
+}
+
+#sliderPanel {
+  background-color: white;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  height: 80vh;
+  padding: 12px;
+}
+
 #navigationPanel {
   margin: auto;
   margin-top: 12px;
   display: flex;
   padding: 12px;
-  width: 90vh;
+
   background-color: white;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }

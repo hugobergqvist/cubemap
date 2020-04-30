@@ -11,54 +11,65 @@
   </head>
 
   <body>
-    <canvas id="canvas"></canvas>
-    <div id="navigationPanel">
-      <div class="dropDownSection">
-        <p class="dropDownLabel">Set Object:</p>
-        <select class="dropDownMenu" id="object" onchange="setObject(this)">
-          <option class="dropDownOption" value="cube">cube</option>
-          <option class="dropDownOption" value="sphere">sphere</option>
-          <option class="dropDownOption" value="cone">cone</option>
-        </select>
+    <div id="flexContainer">
+      <div id="leftSection">
+        <div id="sliderPanel"></div>
       </div>
+      <div id="rightSection">
+        <canvas id="canvas"></canvas>
+        <div id="navigationPanel">
+          <div class="dropDownSection">
+            <p class="dropDownLabel">Set Object:</p>
+            <select class="dropDownMenu" id="object" onchange="setObject(this)">
+              <option class="dropDownOption" value="cube">cube</option>
+              <option class="dropDownOption" value="sphere">sphere</option>
+              <option class="dropDownOption" value="cone">cone</option>
+            </select>
+          </div>
 
-      <div class="dropDownSection">
-        <p class="dropDownLabel">Set Background:</p>
-        <select
-          class="dropDownMenu"
-          id="background"
-          onchange="setBackground(this)"
-        >
-          <option class="dropDownOption" value="bridge">Niagra</option>
-          <option class="dropDownOption" value="footballField"
-            >Football field</option
-          >
-          <option class="dropDownOption" value="saintLazarusChurch"
-            >Saint Lazarus church</option
-          >
-        </select>
-      </div>
+          <div class="dropDownSection">
+            <p class="dropDownLabel">Set Background:</p>
+            <select
+              class="dropDownMenu"
+              id="background"
+              onchange="setBackground(this)"
+            >
+              <option class="dropDownOption" value="bridge">Niagra</option>
+              <option class="dropDownOption" value="footballField"
+                >Football field</option
+              >
+              <option class="dropDownOption" value="saintLazarusChurch"
+                >Saint Lazarus church</option
+              >
+            </select>
+          </div>
 
-      <div id="changeRotationButtonsWrapper">
-        <p class="dropDownLabel">Set Camera Rotation:</p>
-        <button class="navButton" onclick="setCameraRotation(`clockwise`)">
-          Clockwise
-        </button>
-        <button class="navButton" onclick="setCameraRotation(`anti-clockwise`)">
-          Anti-clockwise
-        </button>
-      </div>
+          <div id="changeRotationButtonsWrapper">
+            <p class="dropDownLabel">Set Camera Rotation:</p>
+            <button class="navButton" onclick="setCameraRotation(`clockwise`)">
+              Clockwise
+            </button>
+            <button
+              class="navButton"
+              onclick="setCameraRotation(`anti-clockwise`)"
+            >
+              Anti-clockwise
+            </button>
+          </div>
 
-      <div id="changeRotationButtonsWrapper">
-        <p class="dropDownLabel">Stop rendering:</p>
-        <button class="navButton" onclick="setRunning(`stop`)">
-          Stop
-        </button>
-        <button class="navButton" onclick="setRunning(`start`)">
-          Start
-        </button>
+          <div id="changeRotationButtonsWrapper">
+            <p class="dropDownLabel">Stop rendering:</p>
+            <button class="navButton" onclick="setRunning(`stop`)">
+              Stop
+            </button>
+            <button class="navButton" onclick="setRunning(`start`)">
+              Start
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+
     <script id="envmap-vertex-shader" type="x-shader/x-vertex">
       attribute vec4 a_position;
       attribute vec3 a_normal;

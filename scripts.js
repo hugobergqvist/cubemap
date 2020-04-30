@@ -1,11 +1,146 @@
 "use strict";
+var canvas = document.querySelector("#canvas");
+var gl = canvas.getContext("webgl");
 
 var backgroundState = "bridge";
 var objectState = "cube";
 var cameraRotation = 1;
 var running = true;
 
+var cubeSize = 0.4;
+
+var sphereRadius = 0.5;
+var sphereSubdivisionsAxis = 10;
+var sphereSubdivisionsHeight = 10;
+
+// create buffers and fill with vertex data
+var cubeBufferInfo = primitives.createCubeBufferInfo(gl, cubeSize);
+
+// SPHERE PARAMETERS: radius, subdivisionsAxis, subdivisionsHeight
+var sphereBufferInfo = primitives.createSphereBufferInfo(
+  gl,
+  sphereRadius,
+  sphereSubdivisionsAxis,
+  sphereSubdivisionsHeight
+);
+
+//CONE PARAMETERS: bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions
+var coneBufferInfo = primitives.createTruncatedConeBufferInfo(
+  gl,
+  0.2,
+  0.4,
+  0.6,
+  10,
+  10
+);
+
+function createCubePanel() {
+  const div = document.getElementById("sliderPanel");
+  div.innerHTML = "";
+  var cubeLabel = document.createElement("p");
+  cubeLabel.innerText = "Set Cube size: ";
+  cubeLabel.className = "dropDownLabel";
+  var node = document.createElement("input");
+  node.type = "range";
+  node.className = "slider";
+  node.setAttribute("min", 10);
+  node.setAttribute("max", 100);
+  node.setAttribute("value", cubeSize * 100);
+  node.addEventListener("change", (e) => {
+    cubeSize = e.target.value / 100;
+    cubeBufferInfo = primitives.createCubeBufferInfo(gl, cubeSize);
+  });
+
+  div.appendChild(cubeLabel);
+  div.appendChild(node);
+}
+
+function createSpherePanel() {
+  const div = document.getElementById("sliderPanel");
+  div.innerHTML = "";
+
+  var sphereRadiusLabel = document.createElement("p");
+  sphereRadiusLabel.innerText = "Set Sphere Radius: ";
+  sphereRadiusLabel.className = "dropDownLabel";
+
+  var sphereRadiusSlider = document.createElement("input");
+  sphereRadiusSlider.type = "range";
+  sphereRadiusSlider.className = "slider";
+  sphereRadiusSlider.setAttribute("min", 10);
+  sphereRadiusSlider.setAttribute("max", 100);
+  sphereRadiusSlider.setAttribute("value", sphereRadius * 100);
+  sphereRadiusSlider.addEventListener("change", (e) => {
+    sphereRadius = event.target.value / 100;
+
+    sphereBufferInfo = primitives.createSphereBufferInfo(
+      gl,
+      sphereRadius,
+      sphereSubdivisionsAxis,
+      sphereSubdivisionsHeight
+    );
+  });
+
+  var sphereSubdivisionsAxisLabel = document.createElement("p");
+  sphereSubdivisionsAxisLabel.innerText =
+    "Set number of subdivisions on axis: ";
+  sphereSubdivisionsAxisLabel.className = "dropDownLabel";
+
+  var sphereSubdivisionsSlider = document.createElement("input");
+  sphereSubdivisionsSlider.type = "range";
+  sphereSubdivisionsSlider.className = "slider";
+  sphereSubdivisionsSlider.setAttribute("min", 4);
+  sphereSubdivisionsSlider.setAttribute("max", 50);
+  sphereSubdivisionsSlider.setAttribute("value", sphereSubdivisionsAxis);
+
+  sphereSubdivisionsSlider.addEventListener("change", (e) => {
+    sphereSubdivisionsAxis = parseInt(e.target.value);
+    sphereBufferInfo = primitives.createSphereBufferInfo(
+      gl,
+      sphereRadius,
+      sphereSubdivisionsAxis,
+      sphereSubdivisionsHeight
+    );
+  });
+
+  var sphereSubdivisionsHeightLabel = document.createElement("p");
+  sphereSubdivisionsHeightLabel.innerText = "Set height of subdivisions: ";
+  sphereSubdivisionsHeightLabel.className = "dropDownLabel";
+
+  var sphereSubdivisionsHeightSlider = document.createElement("input");
+  sphereSubdivisionsHeightSlider.type = "range";
+  sphereSubdivisionsHeightSlider.className = "slider";
+  sphereSubdivisionsHeightSlider.setAttribute("min", 4);
+  sphereSubdivisionsHeightSlider.setAttribute("max", 50);
+  sphereSubdivisionsHeightSlider.setAttribute(
+    "value",
+    sphereSubdivisionsHeight
+  );
+
+  sphereSubdivisionsHeightSlider.addEventListener("change", (e) => {
+    sphereSubdivisionsHeight = parseInt(e.target.value);
+    sphereBufferInfo = primitives.createSphereBufferInfo(
+      gl,
+      sphereRadius,
+      sphereSubdivisionsAxis,
+      sphereSubdivisionsHeight
+    );
+  });
+
+  div.appendChild(sphereRadiusLabel);
+  div.appendChild(sphereRadiusSlider);
+  div.appendChild(sphereSubdivisionsAxisLabel);
+  div.appendChild(sphereSubdivisionsSlider);
+  div.appendChild(sphereSubdivisionsHeightLabel);
+  div.appendChild(sphereSubdivisionsHeightSlider);
+}
+
 function setObject(selectObject) {
+  if (selectObject.value == "cube") {
+    createCubePanel();
+  } else if (selectObject.value == "sphere") {
+    createSpherePanel();
+  }
+
   console.log(selectObject.value);
   objectState = selectObject.value;
 }
@@ -36,13 +171,20 @@ function setRunning(runningInput) {
   }
 }
 
-function createEnvironment() {}
+function drawObject(gl, bufferInfo) {
+  if (objectState == "cube") {
+    webglUtils.drawBufferInfo(gl, cubeBufferInfo);
+  } else if (objectState == "sphere") {
+    webglUtils.drawBufferInfo(gl, sphereBufferInfo);
+  } else if (objectState == "cone") {
+    webglUtils.drawBufferInfo(gl, coneBufferInfo);
+  }
+}
 
 function main() {
   // Get A WebGL context
   /** @type {HTMLCanvasElement} */
-  var canvas = document.querySelector("#canvas");
-  var gl = canvas.getContext("webgl");
+
   if (!gl) {
     return;
   }
@@ -64,21 +206,6 @@ function main() {
     "skybox-fragment-shader",
   ]);
 
-  // create buffers and fill with vertex data
-  const cubeBufferInfo = primitives.createCubeBufferInfo(gl, 1);
-
-  // SPHERE PARAMETERS: radius, subdivisionsAxis, subdivisionsHeight
-  const sphereBufferInfo = primitives.createSphereBufferInfo(gl, 0.5, 10, 10);
-
-  //CONE PARAMETERS: bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions
-  const coneBufferInfo = primitives.createTruncatedConeBufferInfo(
-    gl,
-    0.2,
-    0.4,
-    0.6,
-    10,
-    10
-  );
   const quadBufferInfo = primitives.createXYQuadBufferInfo(gl);
 
   // Create a texture.
@@ -252,13 +379,7 @@ function main() {
       u_worldCameraPosition: cameraPosition,
     });
 
-    if (objectState == "cube") {
-      webglUtils.drawBufferInfo(gl, cubeBufferInfo);
-    } else if (objectState == "sphere") {
-      webglUtils.drawBufferInfo(gl, sphereBufferInfo);
-    } else if (objectState == "cone") {
-      webglUtils.drawBufferInfo(gl, coneBufferInfo);
-    }
+    drawObject(gl);
 
     // draw the skybox
 
@@ -280,3 +401,4 @@ function main() {
 }
 
 main();
+createCubePanel();
