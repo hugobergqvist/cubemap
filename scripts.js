@@ -2,6 +2,8 @@
 
 var backgroundState = "bridge";
 var objectState = "cube";
+var cameraRotation = 1;
+var running = true;
 
 function setObject(shape) {
   console.log(shape);
@@ -15,7 +17,24 @@ function setBackground(background) {
   }
 }
 
-function createEnvironment() {}
+function setCameraRotation(rotation) {
+  if (rotation === "clockwise") {
+    cameraRotation = 1;
+  } if (rotation === "anti-clockwise") {
+    cameraRotation = -1;
+  }
+}
+
+function setRunning(runningInput) {
+  if (runningInput === "stop") {
+    running = false;
+  } if (runningInput === "start") {
+    running = true;
+    main();
+  }
+}
+
+function createEnvironment() { }
 
 function main() {
   // Get A WebGL context
@@ -97,8 +116,8 @@ function main() {
     // Upload the canvas to the cubemap face.
     const level = 0;
     const internalFormat = gl.RGBA;
-    const width = 2048;
-    const height = 2048;
+    const width = 1024;
+    const height = 1024;
     const format = gl.RGBA;
     const type = gl.UNSIGNED_BYTE;
 
@@ -152,6 +171,7 @@ function main() {
 
   requestAnimationFrame(drawScene);
 
+
   // Draw the scene.
   function drawScene(time) {
     // convert to seconds
@@ -178,7 +198,7 @@ function main() {
 
     // camera going in circle 2 units from origin looking at origin
     var cameraPosition = [
-      Math.cos(time * 0.1) * 2,
+      (Math.cos(time * 0.1) * 2) * cameraRotation,
       0,
       Math.sin(time * 0.1) * 2,
     ];
@@ -193,7 +213,7 @@ function main() {
     // Rotate the cube around the x axis
     var worldMatrix = m4.xRotation(time * 0.11);
 
-    // We only care about direciton so remove the translation
+    // We only care about direction so remove the translation
     var viewDirectionMatrix = m4.copy(viewMatrix);
     viewDirectionMatrix[12] = 0;
     viewDirectionMatrix[13] = 0;
@@ -252,7 +272,9 @@ function main() {
     });
     webglUtils.drawBufferInfo(gl, quadBufferInfo);
 
-    requestAnimationFrame(drawScene);
+    if (running) {
+      requestAnimationFrame(drawScene);
+    }
   }
 }
 

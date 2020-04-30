@@ -1,6 +1,7 @@
 @import url("https://webglfundamentals.org/webgl/resources/webgl-tutorials.css");
 body {
   margin: 0;
+  background-color: white;
 }
 canvas {
   width: 100vw;

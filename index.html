@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
-    <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
-    <script src="https://webglfundamentals.org/webgl/resources/primitives.js"></script>
-  </head>
-  <body>
-    <canvas id="canvas"></canvas>
-    <div id="navigationPanel">
-      <p>Set object</p>
-      <div id="objectButtonsWrapper">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
+  <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
+  <script src="https://webglfundamentals.org/webgl/resources/primitives.js"></script>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+  <div id="navigationPanel">
+    <p>Set object:</p>
+    <div id="objectButtonsWrapper">
       <button class="navButton" onclick="setObject(`cube`)">
         Cube
       </button>
@@ -24,8 +26,8 @@
         Cone
       </button>
     </div>
-      <p>Set Background</p>
-      <div id="backgroundButtonsWrapper">
+    <p>Set Background:</p>
+    <div id="backgroundButtonsWrapper">
       <button class="navButton" onclick="setBackground(`bridge`)">
         Niagra
       </button>
@@ -34,6 +36,24 @@
       </button>
       <button class="navButton" onclick="setBackground(`saintLazarusChurch`)">
         Saint Lazarus church
+      </button>
+    </div>
+    <p>Set Camera Rotation:</p>
+    <div id="changeRotationButtonsWrapper">
+      <button class="navButton" onclick="setCameraRotation(`clockwise`)">
+        Clockwise
+      </button>
+      <button class="navButton" onclick="setCameraRotation(`anti-clockwise`)">
+        Anti-clockwise
+      </button>
+    </div>
+    <p>Stop rendering:</p>
+    <div id="changeRotationButtonsWrapper">
+      <button class="navButton" onclick="setRunning(`stop`)">
+        Stop
+      </button>
+      <button class="navButton" onclick="setRunning(`start`)">
+        Start
       </button>
     </div>
     <script id="envmap-vertex-shader" type="x-shader/x-vertex">
@@ -46,6 +66,8 @@
 
       varying vec3 v_worldPosition;
       varying vec3 v_worldNormal;
+
+
 
       void main() {
         // Multiply the position by the matrix.
@@ -100,6 +122,7 @@
         gl_FragColor = textureCube(u_skybox, normalize(t.xyz / t.w));
       }
     </script>
+
     <!--
     for most samples webgl-utils only provides shader compiling/linking and
     canvas resizing because why clutter the examples with code that's the same in every sample.
@@ -108,5 +131,6 @@
     for webgl-utils, m3, m4, and webgl-lessons-ui.
     -->
     <script type="text/javascript" src="scripts.js"></script>
-  </body>
+</body>
+
 </html>
