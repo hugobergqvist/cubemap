@@ -1,7 +1,7 @@
 "use strict";
 
 var backgroundState = "bridge";
-var objectState = "sphere";
+var objectState = "cube";
 
 function setObject(shape) {
   console.log(shape);
