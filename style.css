@@ -4,17 +4,18 @@ body {
   background-color: white;
 }
 canvas {
-  width: 100vw;
-  height: 90vh;
-  display: block;
-  position: relative;
+  width: 90vh;
+  height: 50vh;
+  margin: auto;
 }
 #navigationPanel {
+  margin: auto;
+  margin-top: 12px;
   display: flex;
   padding: 12px;
-  position: absolute;
-  width: 100vw;
+  width: 90vw;
   background-color: white;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .navButton {
@@ -30,11 +31,24 @@ canvas {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
-#objectButtonsWrapper {
-  display: flex;
+.dropDownMenu {
+  margin: 8px;
+  cursor: pointer;
+  padding: 12px;
+  font-size: 12pt;
+  width: max-content;
+  outline: none;
+  font-weight: 300;
+  height: 40px;
+  border: none;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
-#backgroundButtonsWrapper {
-  display: flex;
+.dropDownLabel {
+  font-size: 10pt;
+  color: grey;
+  margin: 0px;
 }
-
+.dropDownSection {
+  margin-right: 12px;
+}

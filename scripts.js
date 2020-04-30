@@ -5,14 +5,14 @@ var objectState = "cube";
 var cameraRotation = 1;
 var running = true;
 
-function setObject(shape) {
-  console.log(shape);
-  objectState = shape;
+function setObject(selectObject) {
+  console.log(selectObject.value);
+  objectState = selectObject.value;
 }
 
-function setBackground(background) {
-  if (background != backgroundState) {
-    backgroundState = background;
+function setBackground(selectObject) {
+  if (selectObject.value != backgroundState) {
+    backgroundState = selectObject.value;
     main();
   }
 }
@@ -20,7 +20,8 @@ function setBackground(background) {
 function setCameraRotation(rotation) {
   if (rotation === "clockwise") {
     cameraRotation = 1;
-  } if (rotation === "anti-clockwise") {
+  }
+  if (rotation === "anti-clockwise") {
     cameraRotation = -1;
   }
 }
@@ -28,13 +29,14 @@ function setCameraRotation(rotation) {
 function setRunning(runningInput) {
   if (runningInput === "stop") {
     running = false;
-  } if (runningInput === "start") {
+  }
+  if (runningInput === "start") {
     running = true;
     main();
   }
 }
 
-function createEnvironment() { }
+function createEnvironment() {}
 
 function main() {
   // Get A WebGL context
@@ -171,7 +173,6 @@ function main() {
 
   requestAnimationFrame(drawScene);
 
-
   // Draw the scene.
   function drawScene(time) {
     // convert to seconds
@@ -198,7 +199,7 @@ function main() {
 
     // camera going in circle 2 units from origin looking at origin
     var cameraPosition = [
-      (Math.cos(time * 0.1) * 2) * cameraRotation,
+      Math.cos(time * 0.1) * 2 * cameraRotation,
       0,
       Math.sin(time * 0.1) * 2,
     ];
