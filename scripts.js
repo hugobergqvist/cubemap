@@ -47,7 +47,7 @@ function main() {
   const cubeBufferInfo = primitives.createCubeBufferInfo(gl, 1);
 
   // SPHERE PARAMETERS: radius, subdivisionsAxis, subdivisionsHeight
-  const sphereBufferInfo = primitives.createSphereBufferInfo(gl, 0.5, 50, 50);
+  const sphereBufferInfo = primitives.createSphereBufferInfo(gl, 0.5, 10, 10);
 
   //CONE PARAMETERS: bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions
   const coneBufferInfo = primitives.createTruncatedConeBufferInfo(
@@ -55,8 +55,8 @@ function main() {
     0.2,
     0.4,
     0.6,
-    50,
-    50
+    10,
+    10
   );
   const quadBufferInfo = primitives.createXYQuadBufferInfo(gl);
 
