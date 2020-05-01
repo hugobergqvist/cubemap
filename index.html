@@ -1,76 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
-    <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
-    <script src="https://webglfundamentals.org/webgl/resources/primitives.js"></script>
-  </head>
 
-  <body>
-    <div id="flexContainer">
-      <div id="leftSection">
-        <div id="sliderPanel"></div>
-      </div>
-      <div id="rightSection">
-        <canvas id="canvas"></canvas>
-        <div id="navigationPanel">
-          <div class="dropDownSection">
-            <p class="dropDownLabel">Set Object:</p>
-            <select class="dropDownMenu" id="object" onchange="setObject(this)">
-              <option class="dropDownOption" value="cube">cube</option>
-              <option class="dropDownOption" value="sphere">sphere</option>
-              <option class="dropDownOption" value="cone">cone</option>
-            </select>
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
+  <script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
+  <script src="https://webglfundamentals.org/webgl/resources/primitives.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+    integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous"></script>
+</head>
 
-          <div class="dropDownSection">
-            <p class="dropDownLabel">Set Background:</p>
-            <select
-              class="dropDownMenu"
-              id="background"
-              onchange="setBackground(this)"
-            >
-              <option class="dropDownOption" value="bridge">Niagra</option>
-              <option class="dropDownOption" value="footballField"
-                >Football field</option
-              >
-              <option class="dropDownOption" value="saintLazarusChurch"
-                >Saint Lazarus church</option
-              >
-            </select>
-          </div>
-
-          <div id="changeRotationButtonsWrapper">
-            <p class="dropDownLabel">Set Camera Rotation:</p>
-            <button class="navButton" onclick="setCameraRotation(`clockwise`)">
-              Clockwise
-            </button>
-            <button
-              class="navButton"
-              onclick="setCameraRotation(`anti-clockwise`)"
-            >
-              Anti-clockwise
-            </button>
-          </div>
-
-          <div id="changeRotationButtonsWrapper">
-            <p class="dropDownLabel">Stop rendering:</p>
-            <button class="navButton" onclick="setRunning(`stop`)">
-              Stop
-            </button>
-            <button class="navButton" onclick="setRunning(`start`)">
-              Start
-            </button>
-          </div>
+<body>
+  <div id="flexContainer">
+    <div id="leftSection">
+      <div id="sliderPanel"></div>
+      <div id="creditPanel" class="row">
+        <div class="col creditText">
+          <h3>CubeMap - DH2323 Project</h3>
+          <p>Hugo Bergqvist &amp; Jacob Möller</p>
         </div>
       </div>
     </div>
+    <div id="rightSection">
+      <canvas id="canvas"></canvas>
+      <div id="navigationPanel">
+        <div class="dropDownSection">
+          <p class="dropDownLabel">Set Object:</p>
+          <select class="dropDownMenu" id="object" onchange="setObject(this)">
+            <option class="dropDownOption" value="cube">cube</option>
+            <option class="dropDownOption" value="sphere">sphere</option>
+            <option class="dropDownOption" value="cone">cone</option>
+          </select>
+        </div>
 
-    <script id="envmap-vertex-shader" type="x-shader/x-vertex">
+        <div class="dropDownSection">
+          <p class="dropDownLabel">Set Background:</p>
+          <select class="dropDownMenu" id="background" onchange="setBackground(this)">
+            <option class="dropDownOption" value="bridge">Niagra</option>
+            <option class="dropDownOption" value="footballField">Football field</option>
+            <option class="dropDownOption" value="saintLazarusChurch">Saint Lazarus church</option>
+            <option class="dropDownOption" value="areskutan">Snowy Mountain</option>
+          </select>
+        </div>
+
+        <div id="changeRotationButtonsWrapper">
+          <p class="dropDownLabel">Set Camera Rotation:</p>
+          <button class="navButton" onclick="setCameraRotation(`clockwise`)">
+            Clockwise
+          </button>
+          <button class="navButton" onclick="setCameraRotation(`anti-clockwise`)">
+            Anti-clockwise
+          </button>
+        </div>
+
+        <div id="changeRotationButtonsWrapper">
+          <p class="dropDownLabel">Stop rendering:</p>
+          <button class="navButton" onclick="setRunning(`stop`)">
+            Stop
+          </button>
+          <button class="navButton" onclick="setRunning(`start`)">
+            Start
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script id="envmap-vertex-shader" type="x-shader/x-vertex">
       attribute vec4 a_position;
       attribute vec3 a_normal;
 
@@ -80,8 +85,6 @@
 
       varying vec3 v_worldPosition;
       varying vec3 v_worldNormal;
-
-
 
       void main() {
         // Multiply the position by the matrix.
@@ -94,8 +97,8 @@
         v_worldNormal = mat3(u_world) * a_normal;
       }
     </script>
-    <!-- fragment shader -->
-    <script id="envmap-fragment-shader" type="x-shader/x-fragment">
+  <!-- fragment shader -->
+  <script id="envmap-fragment-shader" type="x-shader/x-fragment">
       precision highp float;
 
       // Passed in from the vertex shader.
@@ -116,7 +119,7 @@
         gl_FragColor = textureCube(u_texture, direction);
       }
     </script>
-    <script id="skybox-vertex-shader" type="x-shader/x-vertex">
+  <script id="skybox-vertex-shader" type="x-shader/x-vertex">
       attribute vec4 a_position;
       varying vec4 v_position;
       void main() {
@@ -124,7 +127,7 @@
         gl_Position = vec4(a_position.xy, 1, 1);
       }
     </script>
-    <script id="skybox-fragment-shader" type="x-shader/x-fragment">
+  <script id="skybox-fragment-shader" type="x-shader/x-fragment">
       precision mediump float;
 
       uniform samplerCube u_skybox;
@@ -136,14 +139,7 @@
         gl_FragColor = textureCube(u_skybox, normalize(t.xyz / t.w));
       }
     </script>
+  <script type="text/javascript" src="scripts.js"></script>
+</body>
 
-    <!--
-    for most samples webgl-utils only provides shader compiling/linking and
-    canvas resizing because why clutter the examples with code that's the same in every sample.
-    See https://webglfundamentals.org/webgl/lessons/webgl-boilerplate.html
-    and https://webglfundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
-    for webgl-utils, m3, m4, and webgl-lessons-ui.
-    -->
-    <script type="text/javascript" src="scripts.js"></script>
-  </body>
 </html>

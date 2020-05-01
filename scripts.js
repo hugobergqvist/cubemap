@@ -10,8 +10,8 @@ var running = true;
 var cubeSize = 0.4;
 
 var sphereRadius = 0.5;
-var sphereSubdivisionsAxis = 10;
-var sphereSubdivisionsHeight = 10;
+var sphereSubdivisionsAxis = 50;
+var sphereSubdivisionsHeight = 50;
 
 // create buffers and fill with vertex data
 var cubeBufferInfo = primitives.createCubeBufferInfo(gl, cubeSize);
