@@ -195,7 +195,6 @@ function drawObject(gl, bufferInfo) {
 }
 
 function main() {
-  // Get A WebGL context
   /** @type {HTMLCanvasElement} */
 
   if (!gl) {
@@ -275,15 +274,10 @@ function main() {
       type,
       null
     );
-
-    // Asynchronously load an image
     const image = new Image();
-
-    //requestCORSIfNotSameOrigin(image, url);
     image.src = url;
 
     image.addEventListener("load", function () {
-      // Now that the image has loaded make copy it to the texture.
       gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
       gl.texImage2D(target, level, internalFormat, format, type, image);
       gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
@@ -369,9 +363,8 @@ function main() {
     );
 
     // draw the cube
-    gl.depthFunc(gl.LESS); // use the default depth test
+    gl.depthFunc(gl.LESS);
     gl.useProgram(envmapProgramInfo.program);
-    //webglUtils.setBuffersAndAttributes(gl, envmapProgramInfo, cubeBufferInfo);
     if (objectState == "cube") {
       webglUtils.setBuffersAndAttributes(gl, envmapProgramInfo, cubeBufferInfo);
     } else if (objectState == "sphere") {
@@ -395,8 +388,6 @@ function main() {
     drawObject(gl);
 
     // draw the skybox
-
-    // let our quad pass the depth test at 1.0
     gl.depthFunc(gl.LEQUAL);
 
     gl.useProgram(skyboxProgramInfo.program);
