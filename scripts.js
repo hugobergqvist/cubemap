@@ -13,6 +13,12 @@ var sphereRadius = 0.5;
 var sphereSubdivisionsAxis = 50;
 var sphereSubdivisionsHeight = 50;
 
+var coneBottomRadius = 0.2;
+var coneTopRadius = 0.4;
+var coneHeight = 0.6;
+var coneRadialSubs = 10;
+var coneVerticalSubs = 10;
+
 // create buffers and fill with vertex data
 var cubeBufferInfo = primitives.createCubeBufferInfo(gl, cubeSize);
 
@@ -27,19 +33,63 @@ var sphereBufferInfo = primitives.createSphereBufferInfo(
 //CONE PARAMETERS: bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions
 var coneBufferInfo = primitives.createTruncatedConeBufferInfo(
   gl,
-  0.2,
-  0.4,
-  0.6,
-  10,
-  10
+  coneBottomRadius,
+  coneTopRadius,
+  coneHeight,
+  coneRadialSubs,
+  coneVerticalSubs
 );
+
+function generateLabel(label) {
+  var newLabel = document.createElement("p");
+  newLabel.innerText = label;
+  newLabel.className = "dropDownLabel";
+  return newLabel;
+}
+
+function generateSlider(max, min, value) {
+  var element = document.createElement("input");
+  element.type = "range";
+  element.className = "slider";
+  element.setAttribute("min", min);
+  element.setAttribute("max", max);
+  element.setAttribute("value", value);
+  return element;
+}
+
+function updateBufferInfo() {
+  if (objectState == "cube") {
+    // create buffers and fill with vertex data
+    cubeBufferInfo = primitives.createCubeBufferInfo(gl, cubeSize);
+  } else if (objectState == "sphere") {
+    // SPHERE PARAMETERS: radius, subdivisionsAxis, subdivisionsHeight
+    sphereBufferInfo = primitives.createSphereBufferInfo(
+      gl,
+      sphereRadius,
+      sphereSubdivisionsAxis,
+      sphereSubdivisionsHeight
+    );
+  } else if (objectState == "cone") {
+    //CONE PARAMETERS: bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions
+    coneBufferInfo = primitives.createTruncatedConeBufferInfo(
+      gl,
+      coneBottomRadius,
+      coneTopRadius,
+      coneHeight,
+      coneRadialSubs,
+      coneVerticalSubs
+    );
+  }
+}
 
 function createCubePanel() {
   const div = document.getElementById("sliderPanel");
   div.innerHTML = "";
+
   var cubeLabel = document.createElement("p");
   cubeLabel.innerText = "Set Cube size: ";
   cubeLabel.className = "dropDownLabel";
+
   var node = document.createElement("input");
   node.type = "range";
   node.className = "slider";
@@ -138,11 +188,53 @@ function createConePanel() {
   const div = document.getElementById("sliderPanel");
   div.innerHTML = "";
 
-  var coneLabel = document.createElement("p");
-  coneLabel.innerText = "TODO: Options for cone";
-  coneLabel.className = "dropDownLabel";
+  // bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions
+  var bottomRadiusLabel = generateLabel("Set bottom radius:");
+  var topRadiusLabel = generateLabel("Set top radius:");
+  var heightLabel = generateLabel("Set height of cone:");
+  var radialSubsLabel = generateLabel("Set radial subdivisions:");
+  var verticalSubsLabel = generateLabel("Set vertical subdivisions:");
 
-  div.appendChild(coneLabel);
+  var bottomRadiusSlider = generateSlider(100, 10, coneBottomRadius * 100);
+  bottomRadiusSlider.addEventListener("change", (e) => {
+    coneBottomRadius = e.target.value / 100;
+    updateBufferInfo();
+  });
+
+  var topRadiusSlider = generateSlider(100, 10, coneTopRadius * 100);
+  topRadiusSlider.addEventListener("change", (e) => {
+    coneTopRadius = e.target.value / 100;
+    updateBufferInfo();
+  });
+
+  var coneHeightSlider = generateSlider(100, 10, coneHeight * 100);
+  coneHeightSlider.addEventListener("change", (e) => {
+    coneHeight = e.target.value / 100;
+    updateBufferInfo();
+  });
+
+  var coneRadialSubsSlider = generateSlider(50, 4, coneRadialSubs);
+  coneRadialSubsSlider.addEventListener("change", (e) => {
+    coneRadialSubs = e.target.value;
+    updateBufferInfo();
+  });
+
+  var coneVerticalSubsSlider = generateSlider(50, 4, coneVerticalSubs);
+  coneVerticalSubsSlider.addEventListener("change", (e) => {
+    coneVerticalSubs = e.target.value;
+    updateBufferInfo();
+  });
+  // bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions
+  div.appendChild(bottomRadiusLabel);
+  div.appendChild(bottomRadiusSlider);
+  div.appendChild(topRadiusLabel);
+  div.appendChild(topRadiusSlider);
+  div.appendChild(heightLabel);
+  div.appendChild(coneHeightSlider);
+  div.appendChild(radialSubsLabel);
+  div.appendChild(coneRadialSubsSlider);
+  div.appendChild(verticalSubsLabel);
+  div.appendChild(coneVerticalSubsSlider);
 }
 
 function setObject(selectObject) {

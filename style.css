@@ -41,7 +41,7 @@ canvas {
 }
 
 .creditText {
-text-align: center;
+  text-align: center;
 }
 
 #navigationPanel {
@@ -87,4 +87,8 @@ text-align: center;
 }
 .dropDownSection {
   margin-right: 12px;
+}
+
+.slider {
+  margin-bottom: 20px;
 }
