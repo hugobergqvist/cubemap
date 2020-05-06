@@ -19,10 +19,8 @@ var coneHeight = 0.6;
 var coneRadialSubs = 10;
 var coneVerticalSubs = 10;
 
-// create buffers and fill with vertex data
 var cubeBufferInfo = primitives.createCubeBufferInfo(gl, cubeSize);
 
-// SPHERE PARAMETERS: radius, subdivisionsAxis, subdivisionsHeight
 var sphereBufferInfo = primitives.createSphereBufferInfo(
   gl,
   sphereRadius,
@@ -30,7 +28,6 @@ var sphereBufferInfo = primitives.createSphereBufferInfo(
   sphereSubdivisionsHeight
 );
 
-//CONE PARAMETERS: bottomRadius, topRadius, height, radialSubdivisions, verticalSubdivisions
 var coneBufferInfo = primitives.createTruncatedConeBufferInfo(
   gl,
   coneBottomRadius,
@@ -287,8 +284,6 @@ function drawObject(gl, bufferInfo) {
 }
 
 function main() {
-  /** @type {HTMLCanvasElement} */
-
   if (!gl) {
     return;
   }
